@@ -1,0 +1,1 @@
+D:\WORK\web_Assembly\Emscripten\emsdk\emsdk_env.bat

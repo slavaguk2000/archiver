@@ -8,3 +8,4 @@ cd /D %_mainpath%%_subdir%
 for  %%f in (*.c) do ( 
    emcc %%f -o %_mainpath%%_subsubdir%%%f.bc
 )
+emcc archiver.cpp -o %_mainpath%%_subsubdir%archiver.bc

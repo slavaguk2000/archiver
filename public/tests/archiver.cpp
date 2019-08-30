@@ -8,8 +8,6 @@
 
 using namespace emscripten;
 
-
-
 class CompressedMemory
 {
 	int source_size;

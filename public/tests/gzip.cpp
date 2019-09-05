@@ -44,6 +44,7 @@ unsigned deflateStream(gz_statep state) {
 	deflate(&(state->strm), Z_FINISH);
 	unsigned count = state->strm.total_out;
 	deflateReset(&(state->strm));
+	deflateEnd(&(state->strm));
 	return count;
 }
 

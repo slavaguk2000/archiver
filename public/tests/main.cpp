@@ -80,19 +80,8 @@ extern "C"{
 }
 
 void print_Hello(int count, int str){
-	char outString[100];
-	//char str[] = "Slava";
-	strcpy(outString, "Hello, ");
-	strcat(outString, (char*)str);
-	for(int i = 0; i < count; i++){
-		puts(outString);
-	}
+	puts("It is my code!!!");
 }
-
-int getPointer(){
-	return sizeof(int);
-}
-
 
 
 EMSCRIPTEN_BINDINGS(my_module) {
@@ -111,8 +100,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("decompress", &my_decompress, allow_raw_pointers());
 	function("clear", &clear, allow_raw_pointers());
 	function("print_Hello", &print_Hello, allow_raw_pointers());
-    function("getPointer", &getPointer, allow_raw_pointers());
-}
+	function("gzipCompress", &gzipCompress, allow_raw_pointers());
+ }
 
 int main() {
 	puts("start");

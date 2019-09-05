@@ -4,6 +4,8 @@
 #include <emscripten/emscripten.h>
 #include <emscripten/bind.h>
 
+#include "gzip.cpp"
+
 #define MEMORY_ERROR -1
 
 using namespace emscripten;

@@ -7,12 +7,12 @@ function compress(sourceArray){
     var compressedSizeArray = new Uint32Array(wasmMemory.buffer, compressedPointer, 1);
     var compressedSize = compressedSizeArray[0];
     wasmCompressedArray =  new Uint8Array(wasmMemory.buffer, compressedPointer+4, compressedSize);
-    const compressedArray = [...wasmCompressedArray]; 
+    const compressedArray = [...wasmCompressedArray];
     Module._free(sourcePointer);
     Module._free(compressedPointer);
     return {
         size,
-        compressedArray
+        new Uint8Array(compressedArray)
     }
 }
 
@@ -25,10 +25,25 @@ function decompress(compressedArray, sourceSize){
     wasmCompressedArray.set(compressedArray);
     var decompressedSize = Module.decompress(compressedPointer, size, decompressedPointer, sourceSize);
     if (decompressedSize != sourceSize) console.log("error");
-    const decompressedArray = [...wasmDecompressedArray]; 
+    const decompressedArray = [...wasmDecompressedArray];
     Module._free(compressedPointer);
     Module._free(decompressedPointer);
     return new Uint8Array(decompressedArray);
+}
+
+function getGzipArray(sourceArray){
+  var size = sourceArray.length
+  var outSize = size + 20;
+  var sourcePointer = Module._malloc(size);
+  var gzipPointer = Module._malloc(outSize) 
+  wasmSourceArray = new Uint8Array(wasmMemory.buffer, sourcePointer, size);
+  wasmSourceArray.set(sourceArray);
+  var gzipSize = Module.gzipCompress(sourcePointer, gzipPointer, size);
+  wasmGzipArray = new Uint8Array(wasmMemory.buffer, gzipPointer, gzipSize);
+  const gzipArray = [...wasmGzipArray];
+  Module._free(sourcePointer);
+  Module._free(gzipPointer);
+  return new Uint8Array(gzipArray);
 }
 
 
@@ -46,15 +61,18 @@ function openFile(callback) {
 function openCurrent(event){
    openFile(function(ARRAY) {
      sourceArray =  [...ARRAY];
+     getGzipFile(new Uint8Array(sourceArray), 'example.gz');
    });
  }
 
+
+
 {
-    var count = 10000
+    var count = 1000
     var sourcePointer = Module._malloc(count);
     var sourceArray = new Uint8Array(wasmMemory.buffer, sourcePointer, count);
     for (var i = 0; i < sourceArray.length; i++)
-        sourceArray[i] = i*i;
+        sourceArray[i] = i%10+48;
 
     var compressedMemory = new Module.CompressedMemory(sourcePointer, count)
 
@@ -80,4 +98,14 @@ var saveByteArray = (function () {
         window.URL.revokeObjectURL(url);
     };
 }());
+
+function getGzipFile(inputArray, name){
+  saveByteArray(getGzipArray(inputArray), name);
+}
+
+var count = 1000
+var sourceArray = new Uint8Array(count);
+for (var i = 0; i < sourceArray.length; i++)
+    sourceArray[i] = i%10+48;
+
 saveByteArray([sampleBytes], 'example.txt');

@@ -1,1 +1,0 @@
-emcc adler32.c.bc compress.c.bc crc32.c.bc deflate.c.bc gzclose.c.bc infback.c.bc inffast.c.bc inflate.c.bc inftrees.c.bc trees.c.bc uncompr.c.bc zutil.c.bc archiver.bc -s WASM=1 -o archiver.js -s LINKABLE=1 -s EXPORT_ALL=1

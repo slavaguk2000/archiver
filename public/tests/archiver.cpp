@@ -1,6 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include "zlib/zlib.h"
 #include <emscripten/emscripten.h>
 #include <emscripten/bind.h>
 

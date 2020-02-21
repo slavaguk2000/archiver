@@ -104,7 +104,6 @@ EMSCRIPTEN_BINDINGS(my_module) {
  }
 
 int main() {
-	puts("start");
 	//startParseFile(5);
 	return 0;
 }
